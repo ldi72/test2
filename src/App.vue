@@ -1,26 +1,67 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ul>
+    <input type="radio" id="one" value="1" v-model="picked" @change="RadioOnChange($event)" checked="checked">
+    <label for="one">Все</label>
+    <br>
+    <input type="radio" id="two" value="2" v-model="picked" @change="RadioOnChange($event)">
+    <label for="two">Меньше 0</label>
+    <br>
+    <input type="radio" id="three" value="3" v-model="picked" @change="RadioOnChange($event)">
+    <label for="three">Больше или равно 0</label>
+    <br>
+    <!--span>Выбрано: {{ picked }}</span-->
+    <br>
+
+    <input type="checkbox" id="checkbox" @change="check($event)">
+    <label for="checkbox">Сортировка по дате</label>
+  </ul>
+
+  <ul style="border-left: solid">
+    <li v-for="item in displayData" v-bind:key="item">
+      <input type="checkbox" v-bind:value="item.id" v-model="selectedAmounts">
+      <label>{{item}}</label><br>
+    </li>
+  </ul>
+
+  <ul style="border-left: solid">
+    <li v-for="item in selectedAmounts"   v-bind:key="item">{{ item }}</li>
+    <!--span>Выбрано: {{selectedAmounts}}</span-->
+  </ul>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    let rndData = [], displayData = [], selectedAmounts = []
+    for (let i = 0; i < 100; i++){rndData.push({id: i+1, amount: Math.floor(Math.random() * (1000 - (-1000) + 1)) + (-1000)})}
+    displayData = rndData;
+    return{
+      selectedAmounts,
+      displayData,
+      rndData,
+      picked: ''
+    }
+  },
+  methods: {
+    check: function(e) {
+      if (e.target.checked) {this.dispData = this.rndData.sort(function (a, b) {return a.amount-b.amount;})}
+      else {this.displayData = this.rndData.sort(function (a, b) {return a.id-b.id;})}
+    },
+    RadioOnChange: function(e) {
+      if (e.target.value == "1") {this.displayData = this.rndData.filter(function(number) {return number.amount;})}
+      if (e.target.value == "2") {this.displayData = this.rndData.filter(function(number) {return number.amount < 0;})}
+      if (e.target.value == "3") {this.displayData = this.rndData.filter(function(number) {return number.amount >= 0;})}
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
 }
 </style>
+<!-- justify-content: space-between;-->
+<!--align-items: center;-->
