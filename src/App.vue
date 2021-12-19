@@ -17,7 +17,7 @@
   </ul>
 
   <ul style="border-left: solid">
-    <li v-for="item in displayData" v-bind:key="item">
+    <li v-for="item in displayData" v-bind:key="item.id">
       <input type="checkbox" v-bind:value="item.id" v-model="selectedAmounts">
       <label>{{item}}</label><br>
     </li>
@@ -46,8 +46,8 @@ export default {
   },
   methods: {
     check: function(e) {
-      if (e.target.checked) {this.dispData = this.rndData.sort(function (a, b) {return a.amount-b.amount;})}
-      else {this.displayData = this.rndData.sort(function (a, b) {return a.id-b.id;})}
+      if (e.target.checked) {this.displayData = this.displayData.sort(function (a, b) {return a.amount-b.amount;})}
+      else {this.displayData = this.displayData.sort(function (a, b) {return a.id-b.id;})}
     },
     RadioOnChange: function(e) {
       if (e.target.value == "1") {this.displayData = this.rndData.filter(function(number) {return number.amount;})}
