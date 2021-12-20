@@ -1,18 +1,18 @@
 <template>
   <ul>
-    <input type="radio" id="one" value="1" v-on:change="onPicked()" v-model="picked">
+    <input type="radio" id="one" value="1" v-model="picked">
     <label for="one">Все</label>
     <br>
-    <input type="radio" id="two" value="2" v-on:change="onPicked()" v-model="picked">
+    <input type="radio" id="two" value="2" v-model="picked">
     <label for="two">Меньше 0</label>
     <br>
-    <input type="radio" id="three" value="3" v-on:change="onPicked()" v-model="picked">
+    <input type="radio" id="three" value="3" v-model="picked">
     <label for="three">Больше или равно 0</label>
     <br>
     <!--span>Выбрано: {{ picked }}</span-->
     <br>
 
-    <input type="checkbox" id="checkbox" v-on:change="onChecked()" v-model="checked">
+    <input type="checkbox" id="checkbox" v-model="checked">
     <label for="checkbox">Сортировка по дате</label>
   </ul>
 
@@ -35,30 +35,39 @@ export default {
   created() {
     for ( let i = 0; i < 100; i++) {
       this.rndData.push({id: i+1, amount: Math.floor(Math.random() * (1000 - (-1000) + 1)) + (-1000)})
-      this.displayData = this.rndData
     }
   },
   data() {
     return {
       selectedAmounts: [],
       rndData: [],
-      displayData: [],
       picked: '1',
       checked: false
     }
   },
-  methods: {
-    onPicked()
+  computed:
+  {
+    displayData()
     {
-      if (this.picked == "1") {this.displayData = this.rndData}
-      else if (this.picked == "2") {this.displayData = this.rndData.filter(item => item.amount < 0)}
-      else if (this.picked == "3") {this.displayData = this.rndData.filter(item => item.amount >= 0)}
-      this.onChecked()
-    },
-    onChecked() {
-      if (this.checked) {this.displayData = this.displayData.sort((a, b) => a.amount-b.amount)}
-      else {this.displayData =  this.displayData.sort((a, b) => a.id-b.id)}
+      let displayData = []
+      if (this.picked == "1") {displayData = this.rndData}
+      else if (this.picked == "2") {displayData = this.rndData.filter(item => item.amount < 0)}
+      else if (this.picked == "3") {displayData = this.rndData.filter(item => item.amount >= 0)}
+
+      if (this.checked) {displayData = displayData.sort(function (a, b) {return a.amount-b.amount})}
+      else {displayData = displayData.sort(function (a, b) {return a.id-b.id})}
+
+      return displayData
     }
+    ,
+    sortData()
+    {
+      let displayData = []
+      if (this.checked) {displayData = this.rndData.sort(function (a, b) {return a.amount-b.amount})}
+      else {displayData = this.rndData.sort(function (a, b) {return a.id-b.id})}
+      return displayData
+    }
+
   }
 }
 </script>
