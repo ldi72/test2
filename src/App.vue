@@ -36,30 +36,40 @@ export default {
   created() {
     for ( let i = 0; i < 100; i++) {
       this.rndData.push({id: i+1, amount: Math.floor(Math.random() * (1000 - (-1000) + 1)) + (-1000)})
+      this.displayData = this.rndData
     }
   },
   data() {
     return {
       selectedAmounts: [],
       rndData: [],
+      displayData: [],
       picked: '1',
       checked: false
     }
   },
   computed: {
-    displayData() {
+    /*displayData() {
       let displayData = []
-      if (this.picked == "1") {displayData = this.rndData}
-      else if (this.picked == "2") {displayData = this.rndData.filter(item => item.amount < 0)}
-      else if (this.picked == "3") {displayData = this.rndData.filter(item => item.amount >= 0)}
+      if (this.picked == "1") {this.displayData = this.rndData}
+      else if (this.picked == "2") {this.displayData = this.rndData.filter(item => item.amount < 0)}
+      else if (this.picked == "3") {this.displayData = this.rndData.filter(item => item.amount >= 0)}
 
       if (this.checked) {displayData = displayData.sort((a, b) => a.amount-b.amount)}
       else {displayData =  displayData.sort((a, b) => a.id-b.id)}
 
-      //if (this.checked) {displayData = displayData.sort(function (a, b) {return a.amount-b.amount;})}
-      //else {displayData =  displayData.sort(function (a, b) {return a.id-b.id;})}
-
       return displayData
+    }*/
+  },
+  watch: {
+    checked() {
+      if (this.checked) {this.displayData = this.displayData.sort((a, b) => a.amount-b.amount)}
+      else {this.displayData =  this.displayData.sort((a, b) => a.id-b.id)}
+    },
+    picked() {
+      if (this.picked == "1") {this.displayData = this.rndData}
+      else if (this.picked == "2") {this.displayData = this.rndData.filter(item => item.amount < 0)}
+      else if (this.picked == "3") {this.displayData = this.rndData.filter(item => item.amount >= 0)}
     }
   }
 }
