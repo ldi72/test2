@@ -54,17 +54,18 @@ export default {
       else if (this.picked == "2") {displayData = this.rndData.filter(item => item.amount < 0)}
       else if (this.picked == "3") {displayData = this.rndData.filter(item => item.amount >= 0)}
 
-      if (this.checked) {displayData = displayData.sort(function (a, b) {return a.amount-b.amount})}
-      else {displayData = displayData.sort(function (a, b) {return a.id-b.id})}
+      //if (this.checked) {displayData = displayData.sort(function (a, b) {return a.amount-b.amount})}
+      //else {displayData = displayData.sort(function (a, b) {return a.id-b.id})}
 
+      displayData = this.sortData(displayData)
       return displayData
     }
     ,
-    sortData()
+    sortData(dData)
     {
       let displayData = []
-      if (this.checked) {displayData = this.rndData.sort(function (a, b) {return a.amount-b.amount})}
-      else {displayData = this.rndData.sort(function (a, b) {return a.id-b.id})}
+      if (this.checked) {displayData = dData.sort(function (a, b) {return a.amount-b.amount})}
+      else {displayData = dData.sort(function (a, b) {return a.id-b.id})}
       return displayData
     }
 
