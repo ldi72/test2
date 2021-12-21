@@ -24,10 +24,11 @@
     </li>
   </ul>
 
-  <column3/>
-    <!--li v-for="item in selectedAmounts" v-bind:key="item">{{ item }}</li-->
-    <!--span>Выбрано: {{selectedAmounts}}</span-->
-  <!--/column3-->
+      <column3/>
+        <!--li v-for="item in selectedAmounts" v-bind:key="item">{{ item }}</li-->
+        <!--span>Выбрано: {{selectedAmounts}}</span-->
+      <!--/column3-->
+
 </div>
 </template>
 
@@ -43,6 +44,7 @@ export default {
   created() {
     for ( let i = 0; i < 100; i++) {
       this.rndData.push({id: i+1, amount: Math.floor(Math.random() * (1000 - (-1000) + 1)) + (-1000)})
+      this.sortData = [...this.rndData].sort(function (a, b) {return a.amount-b.amount})
     }
   },
   data() {
@@ -50,6 +52,7 @@ export default {
       column3,
       //selectedAmounts: [],
       rndData: [],
+      sortData: [],
       picked: '1',
       checked: false
     }
@@ -57,22 +60,27 @@ export default {
   computed: {
     displayData()
     {
-      let displayData = []
-      if (this.checked) {displayData = [...this.filterData].sort(function (a, b) {return a.amount-b.amount})}
-      else {displayData = [...this.filterData].sort(function (a, b) {return a.id-b.id})}
-
-      return displayData
+      if (!this.checked) {
+        if (this.picked == "2") {return this.rndData.filter(function (item) {return item.amount < 0})}
+        else if (this.picked == "3") {return this.rndData.filter(function (item) {return item.amount >= 0})}
+        return this.rndData
+      }else
+      {
+        if (this.picked == "2") {return this.sortData.filter(function (item) {return item.amount < 0})}
+        else if (this.picked == "3") {return this.sortData.filter(function (item) {return item.amount >= 0})}
+        return this.sortData
+      }
+      //if (this.checked) {return [...this.filterData].sort(function (a, b) {return a.amount-b.amount})}
+      //else {return [...this.filterData].sort(function (a, b) {return a.id-b.id})}
     }
-    ,
+    /*,
     filterData()
     {
-      let fData = []
-      if (this.picked == "1") {fData = this.rndData}
-      else if (this.picked == "2") {fData = this.rndData.filter(function(item) {return item.amount < 0})}
-      else if (this.picked == "3") {fData = this.rndData.filter(function(item) {return item.amount >= 0})}
-      return fData
+      if (this.picked == "2") {return this.rndData.filter(function(item) {return item.amount < 0})}
+      else if (this.picked == "3") {return this.rndData.filter(function(item) {return item.amount >= 0})}
+      return this.rndData
     }
-
+    */
   }
 }
 </script>
