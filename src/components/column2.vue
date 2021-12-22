@@ -1,8 +1,10 @@
 <template>
   <ul style="border-left: solid">
     <li v-for="item in displayData" v-bind:key="item.id">
-      <input type="checkbox" v-bind:value="item.id" v-model="selectedAmountsChild">
+      <input type="checkbox" v-bind:value="item" v-model="selectedAmountsChild">
       <label>{{ item }}</label>
+      <button @click="item.amount++">+1</button>
+      <button @click="item.amount--">-1</button>
     </li>
   </ul>
 </template>
