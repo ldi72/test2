@@ -1,86 +1,37 @@
 <template>
   <div id="app">
-  <ul>
-    <input type="radio" id="one" value="1" v-model="picked">
-    <label for="one">Все</label>
-    <br>
-    <input type="radio" id="two" value="2" v-model="picked">
-    <label for="two">Меньше 0</label>
-    <br>
-    <input type="radio" id="three" value="3" v-model="picked">
-    <label for="three">Больше или равно 0</label>
-    <br>
-    <!--span>Выбрано: {{ picked }}</span-->
-    <br>
 
-    <input type="checkbox" id="checkbox" v-model="checked">
-    <label for="checkbox">Сортировка по дате</label>
-  </ul>
+    <column1  :is-sorted = "isSorted" @update:is-sorted ="isSorted = $event"
+              :checked-items = "checkedItems" @update:checked-items = "checkedItems = $event"/>
 
-  <ul style="border-left: solid">
-    <li v-for="item in displayData" v-bind:key="item.id">
-      <input type="checkbox" v-bind:value="item.id" v-model="column3.data().selectedAmounts">
-      <label>{{ item }}</label><br>
-    </li>
-  </ul>
+    <column2  @update:selected-amounts="selectedAmounts = $event"
+              :selected-amounts = "selectedAmounts"
+              :is-sorted = "isSorted"
+              :checked-items = "checkedItems"/>
 
-      <column3/>
-        <!--li v-for="item in selectedAmounts" v-bind:key="item">{{ item }}</li-->
-        <!--span>Выбрано: {{selectedAmounts}}</span-->
-      <!--/column3-->
+    <column3  :selected-amounts = "selectedAmounts"/>
 
 </div>
 </template>
 
 <script>
-
+import column1 from "./components/column1";
+import column2 from "./components/column2";
 import column3 from "./components/column3";
 
 export default {
   components: {
+    column1,
+    column2,
     column3
   },
   name: 'App',
-  created() {
-    for ( let i = 0; i < 100; i++) {
-      this.rndData.push({id: i+1, amount: Math.floor(Math.random() * (1000 - (-1000) + 1)) + (-1000)})
-      this.sortData = [...this.rndData].sort(function (a, b) {return a.amount-b.amount})
-    }
-  },
   data() {
     return {
-      column3,
-      //selectedAmounts: [],
-      rndData: [],
-      sortData: [],
-      picked: '1',
-      checked: false
+      selectedAmounts: [],
+      checkedItems: '1',
+      isSorted: false
     }
-  },
-  computed: {
-    displayData()
-    {
-      if (!this.checked) {
-        if (this.picked == "2") {return this.rndData.filter(function (item) {return item.amount < 0})}
-        else if (this.picked == "3") {return this.rndData.filter(function (item) {return item.amount >= 0})}
-        return this.rndData
-      }else
-      {
-        if (this.picked == "2") {return this.sortData.filter(function (item) {return item.amount < 0})}
-        else if (this.picked == "3") {return this.sortData.filter(function (item) {return item.amount >= 0})}
-        return this.sortData
-      }
-      //if (this.checked) {return [...this.filterData].sort(function (a, b) {return a.amount-b.amount})}
-      //else {return [...this.filterData].sort(function (a, b) {return a.id-b.id})}
-    }
-    /*,
-    filterData()
-    {
-      if (this.picked == "2") {return this.rndData.filter(function(item) {return item.amount < 0})}
-      else if (this.picked == "3") {return this.rndData.filter(function(item) {return item.amount >= 0})}
-      return this.rndData
-    }
-    */
   }
 }
 </script>
