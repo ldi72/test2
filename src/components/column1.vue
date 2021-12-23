@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="column">
     <input type="radio" id="one" value="1" v-model="pickedChild">
     <label for="one">Все</label>
     <br>

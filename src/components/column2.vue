@@ -1,10 +1,10 @@
 <template>
-  <ul style="border-left: solid">
-    <li v-for="item in displayData" v-bind:key="item.id">
+  <ul class="column">
+    <li v-for="item in displayData" v-bind:key="item.id-1">
       <input type="checkbox" v-bind:value="item" v-model="selectedAmountsChild">
       <label>{{ item }}</label>
-      <button @click="item.amount++">+1</button>
-      <button @click="item.amount--">-1</button>
+      <button v-on:click="item.amount++; this.rndData.splice(item.id-1,1,item)">+1</button>
+      <button v-on:click="item.amount--">-1</button>
     </li>
   </ul>
 </template>
@@ -27,6 +27,14 @@ export default {
       rndData: []
     }
   },
+  watch: {
+    displayData() {
+      console.log("displayData")
+    },
+    filterData() {
+      console.log('filterData')
+    }
+  },
   computed: {
     selectedAmountsChild: {
       get() {
@@ -34,18 +42,21 @@ export default {
       },
       set(selectedAmountsChild) {
         this.$emit('update:selectedAmounts', selectedAmountsChild)
-      }
+      },
     },
 
     displayData() {
-      if (this.isSorted) {return [...this.filterData].sort(function (a, b) {return a.amount-b.amount})}
-      else {return [...this.filterData]}
+      const displayData = [...this.filterData];
+      if (this.isSorted) {displayData.sort(function (a, b) {return a.amount-b.amount})}
+      return displayData
     },
 
     filterData() {
-      if (this.checkedItems === "2") {return this.rndData.filter(function(item) {return item.amount < 0})}
-      else if (this.checkedItems === "3") {return this.rndData.filter(function(item) {return item.amount >= 0})}
-      return this.rndData
+      let filterData = []
+      if (this.checkedItems === "2") {filterData = this.rndData.filter(function(item) {return item.amount < 0})}
+      else if (this.checkedItems === "3") {filterData = this.rndData.filter(function(item) {return item.amount >= 0})}
+      filterData =  this.rndData
+      return filterData
     }
 
   }

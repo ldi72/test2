@@ -33,12 +33,25 @@ export default {
       isSorted: false
     }
   }
-}
+};
+
 </script>
 
 <style>
+html, body, #app {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
 #app {
   display: flex;
+}
+.column {
+  border: 1px solid lightgray;
+  overflow: hidden auto;
+  min-width: 33%;
+
 }
 </style>
 <!-- justify-content: space-between;-->

@@ -1,6 +1,6 @@
 <template>
-  <ul style="border-left: solid">
-    <li v-for="item in selectedAmounts" v-bind:key="item">
+  <ul class="column">
+    <li v-for="item in selectedAmounts" v-bind:key="item.id-1">
       id: {{ item.id }}, amount: {{ item.amount }}
     </li>
   </ul>
