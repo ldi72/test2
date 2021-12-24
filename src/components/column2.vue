@@ -1,15 +1,17 @@
 <template>
   <ul class="column">
-    <li v-for="item in displayData" v-bind:key="item.id-1">
+    <li v-for="item in SortedFilteredData" v-bind:key="item.id">
       <input type="checkbox" v-bind:value="item" v-model="selectedAmountsChild">
       <label>{{ item }}</label>
-      <button v-on:click="item.amount++; this.rndData.splice(item.id-1,1,item)">+1</button>
-      <button v-on:click="item.amount--">-1</button>
+      <button v-on:click="item.amount +=1; this.rndData.splice(item.id-1,1,item)">+1</button>
+      <button v-on:click="item.amount -=1">-1</button>
     </li>
   </ul>
 </template>
 
 <script>
+  const compareBy = (key) => (a, b) => a[key] - b[key]
+
 export default {
   name: "column2",
   created() {
@@ -20,21 +22,23 @@ export default {
   props: {
     checkedItems: String,
     isSorted: Boolean,
-    selectedAmounts: Array
+    selectedAmounts: Array,
+    sortedDirect: String,
+    sortedField: String
   },
   data() {
     return {
       rndData: []
     }
   },
-  watch: {
-    displayData() {
-      console.log("displayData")
+  /*watch: {
+    SortedFilteredData: {
+      handler(){ console.log("SortedFilteredData")}, deep: true
     },
-    filterData() {
-      console.log('filterData')
-    }
-  },
+    FilteredData: {
+      handler(){ console.log("FilteredData")}, deep: true
+    },
+  },*/
   computed: {
     selectedAmountsChild: {
       get() {
@@ -45,18 +49,18 @@ export default {
       },
     },
 
-    displayData() {
-      const displayData = [...this.filterData];
-      if (this.isSorted) {displayData.sort(function (a, b) {return a.amount-b.amount})}
-      return displayData
+    SortedFilteredData() {
+      //const SortedFilteredData = [...this.FilteredData];
+      //if (this.isSorted) {SortedFilteredData.sort(compareBy('amount'))}
+      const SortedFilteredData = [...this.FilteredData].sort(compareBy(this.sortedField))
+      if (this.sortedDirect === 'backward') SortedFilteredData.reverse()
+      return SortedFilteredData
     },
 
-    filterData() {
-      let filterData = []
-      if (this.checkedItems === "2") {filterData = this.rndData.filter(function(item) {return item.amount < 0})}
-      else if (this.checkedItems === "3") {filterData = this.rndData.filter(function(item) {return item.amount >= 0})}
-      filterData =  this.rndData
-      return filterData
+    FilteredData() {
+      if (this.checkedItems === "2") {return this.rndData.filter(function(item) {return item.amount < 0})}
+      else if (this.checkedItems === "3") {return this.rndData.filter(function(item) {return item.amount >= 0})}
+      return this.rndData
     }
 
   }

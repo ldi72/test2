@@ -13,6 +13,12 @@
 
     <input type="checkbox" id="checkbox" v-model="checkedChild">
     <label for="checkbox">Сортировка по дате</label>
+    <br>
+    <br>
+
+    <button v-on:click="direct('forward')">Вперед</button>
+    <button v-on:click="direct('backward')">Назад</button>
+
   </ul>
 </template>
 
@@ -21,7 +27,22 @@ export default {
   name: "column1",
   props: {
     isSorted: Boolean,
-    checkedItems: String
+    checkedItems: String,
+    sortedDirect: String,
+    sortedField: String
+  },
+  data() {
+    return {
+      //sortedDirectChild: 'forward',
+      //sortedFieldChild: 'id'
+    }
+  },
+  methods: {
+    direct(direct) {
+      if (this.sortedField === 'id') {this.$emit('update:sortedField', 'amount')}
+      else {this.$emit('update:sortedField', 'id')}
+      this.$emit('update:sortedDirect', direct)
+    },
   },
   computed: {
     checkedChild: {

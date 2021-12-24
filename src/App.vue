@@ -2,12 +2,18 @@
   <div id="app">
 
     <column1  :is-sorted = "isSorted" @update:is-sorted ="isSorted = $event"
-              :checked-items = "checkedItems" @update:checked-items = "checkedItems = $event"/>
+              :checked-items = "checkedItems" @update:checked-items = "checkedItems = $event"
+              :sorted-direct = "sortedDirect" @update:sorted-direct = "sortedDirect = $event"
+              :sorted-field = "sortedField" @update:sorted-field = "sortedField = $event"
+    />
 
     <column2  @update:selected-amounts="selectedAmounts = $event"
               :selected-amounts = "selectedAmounts"
               :is-sorted = "isSorted"
-              :checked-items = "checkedItems"/>
+              :checked-items = "checkedItems"
+              :sorted-direct = "sortedDirect"
+              :sorted-field = "sortedField"
+    />
 
     <column3  :selected-amounts = "selectedAmounts"/>
 
@@ -30,7 +36,9 @@ export default {
     return {
       selectedAmounts: [],
       checkedItems: '1',
-      isSorted: false
+      isSorted: false,
+      sortedDirect: 'forward',
+      sortedField: 'id'
     }
   }
 };
