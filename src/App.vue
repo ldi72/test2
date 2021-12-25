@@ -1,23 +1,16 @@
 <template>
   <div id="app">
-
-    <column1  :is-sorted = "isSorted" @update:is-sorted ="isSorted = $event"
-              :checked-items = "checkedItems" @update:checked-items = "checkedItems = $event"
-              :sorted-direct = "sortedDirect" @update:sorted-direct = "sortedDirect = $event"
-              :sorted-field = "sortedField" @update:sorted-field = "sortedField = $event"
+    <column1  v-model:checked-items = "checkedItems"
+              v-model:sorted-direct = "sortedDirect"
+              v-model:sorted-field = "sortedField"
     />
-
-    <column2  @update:selected-amounts="selectedAmounts = $event"
-              :selected-amounts = "selectedAmounts"
-              :is-sorted = "isSorted"
-              :checked-items = "checkedItems"
-              :sorted-direct = "sortedDirect"
-              :sorted-field = "sortedField"
+    <column2  v-model:selected-amounts = "selectedAmounts"
+              v-model:checked-items = "checkedItems"
+              v-model:sorted-direct = "sortedDirect"
+              v-model:sorted-field = "sortedField"
     />
-
-    <column3  :selected-amounts = "selectedAmounts"/>
-
-</div>
+    <column3  v-model:selected-amounts = "selectedAmounts"/>
+  </div>
 </template>
 
 <script>

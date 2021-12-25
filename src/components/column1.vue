@@ -1,5 +1,5 @@
 <template>
-  <ul class="column">
+  <div class="column">
     <input type="radio" id="one" value="1" v-model="pickedChild">
     <label for="one">Все</label>
     <br>
@@ -11,48 +11,57 @@
     <br>
     <br>
 
-    <input type="checkbox" id="checkbox" v-model="checkedChild">
-    <label for="checkbox">Сортировка по дате</label>
-    <br>
-    <br>
-
-    <button v-on:click="direct('forward')">Вперед</button>
     <button v-on:click="direct('backward')">Назад</button>
+    <button v-on:click="direct('forward')">Вперед</button>
+    <br>
+    <br>
 
-  </ul>
+    <select v-model="selected" v-on:change="OnChangeSelect()">
+      <option v-for="option in options" :value="option.idx" v-bind:key="option.idx">
+         {{ option.text }}
+      </option>
+    </select>
+
+  </div>
 </template>
 
 <script>
 export default {
   name: "column1",
-  props: {
-    isSorted: Boolean,
-    checkedItems: String,
-    sortedDirect: String,
-    sortedField: String
-  },
+  props:
+    ['isSorted',
+    'checkedItems',
+    'sortedDirect',
+    'sortedField']
+  ,
   data() {
     return {
-      //sortedDirectChild: 'forward',
-      //sortedFieldChild: 'id'
+      selected: 0,
+      options: [
+        { field: 'id', direct: 'forward', text: 'СортВперед по id', idx: 0 },
+        { field: 'id', direct: 'backward', text: 'СортНазад по id', idx: 1 },
+        { field: 'amount', direct: 'forward', text: 'СортВперед по amount', idx: 2 },
+        { field: 'amount', direct: 'backward', text: 'СортНазад по amount ', idx: 3 }
+      ]
     }
   },
   methods: {
+    OnChangeSelect()
+    {
+      this.$emit('update:sortedField', this.options[this.selected].field)
+      this.$emit('update:sortedDirect', this.options[this.selected].direct)
+    },
     direct(direct) {
-      if (this.sortedField === 'id') {this.$emit('update:sortedField', 'amount')}
-      else {this.$emit('update:sortedField', 'id')}
-      this.$emit('update:sortedDirect', direct)
+      if (direct === 'forward'){
+        if (this.options.length-1 === this.selected) this.selected =0
+        else this.selected +=1}
+      else {
+        if (this.selected === 0) this.selected = this.options.length-1
+        else this.selected -=1}
+      this.OnChangeSelect()
     },
   },
   computed: {
-    checkedChild: {
-      get() {
-        return this.isSorted
-      },
-      set(checkedChild) {
-        this.$emit('update:isSorted', checkedChild)
-      }
-    },
     pickedChild: {
       get() {
         return this.checkedItems

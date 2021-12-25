@@ -45,13 +45,11 @@ export default {
         return this.selectedAmounts
       },
       set(selectedAmountsChild) {
-        this.$emit('update:selectedAmounts', selectedAmountsChild)
+        this.$emit('input:selectedAmounts', selectedAmountsChild)
       },
     },
 
     SortedFilteredData() {
-      //const SortedFilteredData = [...this.FilteredData];
-      //if (this.isSorted) {SortedFilteredData.sort(compareBy('amount'))}
       const SortedFilteredData = [...this.FilteredData].sort(compareBy(this.sortedField))
       if (this.sortedDirect === 'backward') SortedFilteredData.reverse()
       return SortedFilteredData
