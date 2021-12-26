@@ -29,9 +29,8 @@ export default {
     return {
       selectedAmounts: [],
       checkedItems: '1',
-      isSorted: false,
       sortedDirect: 'forward',
-      sortedField: 'id'
+      sortedField: 'id',
     }
   }
 };

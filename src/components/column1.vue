@@ -16,7 +16,7 @@
     <br>
     <br>
 
-    <select v-model="selected" v-on:change="OnChangeSelect()">
+    <select v-model="ChangeSelect">
       <option v-for="option in options" :value="option.idx" v-bind:key="option.idx">
          {{ option.text }}
       </option>
@@ -29,11 +29,14 @@
 export default {
   name: "column1",
   props:
-    ['isSorted',
-    'checkedItems',
+    ['checkedItems',
     'sortedDirect',
     'sortedField']
   ,
+  created() {
+    //this.selected = 2
+    this.ChangeSelect = 2
+  },
   data() {
     return {
       selected: 0,
@@ -46,22 +49,27 @@ export default {
     }
   },
   methods: {
-    OnChangeSelect()
-    {
-      this.$emit('update:sortedField', this.options[this.selected].field)
-      this.$emit('update:sortedDirect', this.options[this.selected].direct)
-    },
     direct(direct) {
       if (direct === 'forward'){
-        if (this.options.length-1 === this.selected) this.selected =0
-        else this.selected +=1}
+        if (this.options.length-1 === this.ChangeSelect) this.ChangeSelect =0
+        else this.ChangeSelect +=1}
       else {
-        if (this.selected === 0) this.selected = this.options.length-1
-        else this.selected -=1}
-      this.OnChangeSelect()
+        if (this.ChangeSelect === 0) this.ChangeSelect = this.options.length-1
+        else this.ChangeSelect -=1}
     },
   },
   computed: {
+    ChangeSelect:
+    {
+      get() {
+        return this.selected
+      },
+      set(ChangeSelect){
+        this.selected = ChangeSelect
+        this.$emit('update:sortedField', this.options[ChangeSelect].field)
+        this.$emit('update:sortedDirect', this.options[ChangeSelect].direct)
+      }
+    },
     pickedChild: {
       get() {
         return this.checkedItems
